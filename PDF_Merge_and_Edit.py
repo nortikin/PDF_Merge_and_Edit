@@ -1,5 +1,6 @@
 import PyPDF2
 import os
+import subprocess
 import time
 import sys
 import webbrowser
@@ -25,7 +26,7 @@ def finished(file, operation, window):
     finishPrompt = tk.Tk()
     finishPrompt.title(operation + " completed!")
     tk.Label(finishPrompt, text=operation + " finished. Would you like to open the file now?").grid(row=0, column=0, columnspan=2, pady=5, padx=5)
-    tk.Button(finishPrompt, text="Open file", command=lambda: os.startfile(file)).grid(row=1, column=0, pady=5, padx=5, sticky=stickyFill)
+    tk.Button(finishPrompt, text="Open file", command=lambda: subprocess.call(['evince',file])).grid(row=1, column=0, pady=5, padx=5, sticky=stickyFill)
     tk.Button(finishPrompt, text="Finished", command=lambda: finishPrompt.destroy()).grid(row=1, column=1, pady=5, padx=5, sticky=stickyFill)
     finishPrompt.mainloop()
 
@@ -122,23 +123,23 @@ def pageUpdate():
     if pageToUpdate == 0 or pageWithUpdate == 0:
         popup("invalid page number, must be greater than 0")
 
-    originalPDF = PyPDF2.PdfFileReader(updateFile)
-    updatedPagePDF = PyPDF2.PdfFileReader(updatedPage)
+    originalPDF = PyPDF2.PdfReader(updateFile)
+    updatedPagePDF = PyPDF2.PdfReader(updatedPage)
 
-    updatedPDF = PyPDF2.PdfFileWriter()
-    updatedPDF.cloneDocumentFromReader(originalPDF)
+    updatedPDF = PyPDF2.PdfWriter()
+    updatedPDF.clone_document_from_reader(originalPDF)
     try:
-        updatedPDF.insertPage(updatedPagePDF.getPage(pageWithUpdate - 1), pageToUpdate - 1)
+        updatedPDF.insertPage(updatedPagePDF.pages[pageWithUpdate - 1], pageToUpdate - 1)
     except IndexError:
         popup("Please check if page number is within range")
 
     outputFile = open(filename, 'wb')
 
-    pdfOut = PyPDF2.PdfFileWriter()
+    pdfOut = PyPDF2.PdfWriter()
 
-    for i in range(updatedPDF.getNumPages()):
+    for i in range(len(updatedPDF.pages)):
         if i != pageToUpdate:
-            pdfOut.addPage(updatedPDF.getPage(i))
+            pdfOut.add_page(updatedPDF.pages[i])
 
     pdfOut.write(outputFile)
     outputFile.close()
@@ -186,22 +187,22 @@ def insertPage():
     if pageToInsert == 0 or pageWithInsert == 0:
         popup("invalid page number, must be greater than 0")
 
-    originalPDF = PyPDF2.PdfFileReader(updateFile)
-    PDFwithInsert = PyPDF2.PdfFileReader(fileWithInsert)
+    originalPDF = PyPDF2.PdfReader(updateFile)
+    PDFwithInsert = PyPDF2.PdfReader(fileWithInsert)
 
-    updatedPDF = PyPDF2.PdfFileWriter()
-    updatedPDF.cloneDocumentFromReader(originalPDF)
+    updatedPDF = PyPDF2.PdfWriter()
+    updatedPDF.clone_document_from_reader(originalPDF)
     try:
-        updatedPDF.insertPage(PDFwithInsert.getPage(pageWithInsert - 1), pageToInsert - 1)
+        updatedPDF.insertPage(PDFwithInsert.pages[pageWithInsert - 1], pageToInsert - 1)
     except IndexError:
         popup("Please check if page number is within range")
 
     outputFile = open(filename, 'wb')
 
-    pdfOut = PyPDF2.PdfFileWriter()
+    pdfOut = PyPDF2.PdfWriter()
 
-    for i in range(updatedPDF.getNumPages()):
-        pdfOut.addPage(updatedPDF.getPage(i))
+    for i in range(len(updatedPDF.pages)):
+        pdfOut.add_page(updatedPDF.pages[i])
 
     pdfOut.write(outputFile)
     outputFile.close()
@@ -237,22 +238,79 @@ def deletePage():
     if pageToDelete == 0:
         popup("invalid page number, must be greater than 0")
 
-    originalPDF = PyPDF2.PdfFileReader(updateFile)
+    originalPDF = PyPDF2.PdfReader(updateFile)
 
-    updatedPDF = PyPDF2.PdfFileWriter()
-    updatedPDF.cloneDocumentFromReader(originalPDF)
+    updatedPDF = PyPDF2.PdfWriter()
+    updatedPDF.clone_document_from_reader(originalPDF)
     try:
-        updatedPDF.getPage(pageToDelete - 1)
+        updatedPDF.pages[pageToDelete - 1]
     except IndexError:
         popup("Please check if page number is within range")
 
     outputFile = open(filename, 'wb')
 
-    pdfOut = PyPDF2.PdfFileWriter()
+    pdfOut = PyPDF2.PdfWriter()
 
-    for i in range(updatedPDF.getNumPages()):
+    for i in range(len(updatedPDF.pages)):
         if i != pageToDelete - 1:
-            pdfOut.addPage(updatedPDF.getPage(i))
+            pdfOut.add_page(updatedPDF.pages[i])
+
+    pdfOut.write(outputFile)
+    outputFile.close()
+
+    deleterWindow.destroy()
+    finished(filename, "Page delete", deleterWindow)
+
+
+def deletePages():
+    deleterWindow = tk.Tk()
+    deleterWindow.title("PDF pages deleter")
+
+    tk.Label(deleterWindow, text="Deletes a several pages inside an existing PDF").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
+
+    tk.Label(deleterWindow, text="Select PDF file to edit:").grid(row=1, column=0, padx=10, pady=3)
+    updateFile = tk.Entry(deleterWindow)
+    updateFile.grid(row=1, column=1, sticky=stickyFill, pady=5, padx=5)
+    tk.Button(deleterWindow, text="Browse...", command=lambda entry=updateFile, window=deleterWindow: filePicker(entry, window)).grid(row=1, column=2, pady=5, padx=5, sticky=stickyFill)
+
+    tk.Label(deleterWindow, text="Page from:").grid(row=2, column=0, padx=10, pady=3)
+    pageFromDelete = tk.Entry(deleterWindow)
+    pageFromDelete.grid(row=2, column=1, sticky=stickyFill, pady=5, padx=5)
+
+    tk.Label(deleterWindow, text="Page to:").grid(row=3, column=0, padx=10, pady=3)
+    pageToDelete = tk.Entry(deleterWindow)
+    pageToDelete.grid(row=3, column=1, sticky=stickyFill, pady=5, padx=5)
+
+    tk.Button(deleterWindow, text="Delete!", command=lambda: deleterWindow.quit()).grid(row=4, column=0, columnspan=3, padx=5, pady=10, sticky=stickyFill)
+
+    deleterWindow.mainloop()
+
+    filename = updateFile.get()
+    filename = filename[:-4] + '-updated.pdf'
+    updateFile = checkExist(updateFile.get())
+    pageToDelete = int(pageToDelete.get())
+    pageFromDelete = int(pageFromDelete.get())
+
+    if pageToDelete == 0 or pageToDelete < pageFromDelete:
+        popup("invalid page number, must be greater than 0 and not reversed")
+
+    originalPDF = PyPDF2.PdfReader(updateFile)
+
+    updatedPDF = PyPDF2.PdfWriter()
+    updatedPDF.clone_document_from_reader(originalPDF)
+    try:
+        for i in range(pageToDelete,pageFromDelete-1,-1):
+            updatedPDF.pages[i - 1]
+    except IndexError:
+        popup("Please check if page number is within range")
+
+    outputFile = open(filename, 'wb')
+
+    pdfOut = PyPDF2.PdfWriter()
+
+    for i in range(len(updatedPDF.pages)):
+        if i > pageToDelete - 1 or i < pageFromDelete - 1:
+            pdfOut.add_page(updatedPDF.pages[i])
 
     pdfOut.write(outputFile)
     outputFile.close()
@@ -287,7 +345,8 @@ tk.Button(selector, text="Merge PDFs", command=merge).grid(row=1, column=1, stic
 tk.Button(selector, text="Update a single page", command=pageUpdate).grid(row=2, column=1, sticky=stickyFill, pady=3, padx=5)
 tk.Button(selector, text="Insert a page into an existing PDF", command=insertPage, padx=20).grid(row=3, column=1, sticky=stickyFill, pady=3, padx=5)
 tk.Button(selector, text="Delete a single page", command=deletePage).grid(row=4, column=1, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Instructions", command=instructions).grid(row=5, column=1, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Delete many pages", command=deletePages).grid(row=5, column=1, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Instructions", command=instructions).grid(row=6, column=1, sticky=stickyFill, pady=3, padx=5)
 
 
 selector.protocol("WM_DELETE_WINDOW", sys.exit)

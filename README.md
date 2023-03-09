@@ -11,22 +11,23 @@
 
 ## Запуск
 
-### Windows
-Установи python3
-Через командную строку введите команду
+### Windows    
+Установи python3     
+
+Через командную строку введите команду    
 ```
 pip install PyPDF2
 ```
-ПКМ запусти py файл через python3+
+ПКМ запусти py файл через python3+   
 
-### macOS/Linux
-Установи python3
+### macOS/Linux  
+Установи python3  
 ```
 python3 -m pip install PyPDF2
 python3 ./PDF_Merge_and_Edit.py
 ```
 
-## Использование
+## Использование  
 
 1. Запустите:
 

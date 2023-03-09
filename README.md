@@ -16,7 +16,7 @@
 ```
 pip install PyPDF2
 ```
-ПКМ запусти py файл
+ПКМ запусти py файл через python3+
 
 ### macOS/Linux
 Установи python3

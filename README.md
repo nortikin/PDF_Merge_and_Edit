@@ -1,39 +1,33 @@
 # PDF Merge and Edit
-# PDF Слияние и редактирование, русская версия
-Редактируйте файлы дома
+Python script to merge and edit sensitive PDF files you don't want to upload to random sites you find on Google
 
-## Функлицыи:
+## Features:
 
-* Слияние
-* Обновление страницы
-* Вставка страницы
-* Удаление диапазона страниц
+* Merge PDFs by adding one to another
+* Update a single page in a PDF (good for adding a signed page to a form)
+* Insert a page into an existing PDF
+* Delete a page
 
-## Запуск
+## How to run
 
-### Windows    
-Установи python3     
+### Windows
+Run the executable file (PDF Merge and Edit.exe)
 
-Через командную строку введите команду    
+### Using python on Windows/macOS/Linux
+**Needs PyPDF2 module installed on machine to work**
+
+If you have Python installed correctly with the correct environment variables install PyPDF2 by typing this into your command line:
 ```
 pip install PyPDF2
 ```
-ПКМ запусти py файл через python3+   
 
-### macOS/Linux  
-Установи python3  
-```
-python3 -m pip install PyPDF2
-python3 ./PDF_Merge_and_Edit.py
-```
+## How to use
 
-## Использование  
-
-1. Запустите:
+1. Run the script or .pyw file
 
 ![main window](screenshots/main.png)
 
-2. Выбери функцию
+2. Click on one of the buttons and a new window will pop up depending on the function
 
 ![merger](screenshots/merge.png)
 
@@ -43,8 +37,8 @@ python3 ./PDF_Merge_and_Edit.py
 
 ![deleter](screenshots/deleter.png)
 
-3. Выбери файлы, в том числе выводящий файл для Слияния
+3. Pick your files and enter in the data
 
-4. Если всё норм, появится окно окончания
+4. If there are no problems, a confirmation will pop up
 
 ![confirm](screenshots/confirm.png)

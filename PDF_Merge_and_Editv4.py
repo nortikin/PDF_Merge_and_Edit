@@ -18,6 +18,7 @@ def popup(text):
     textwindow = tk.Tk()
     textwindow.title('Оштбка!')
     textwindow.minsize(width=300, height=50)
+    textwindow.resizable(False, False)
     label = tk.Label(textwindow, text=text)
     label.pack()
     label.configure(pady=20)
@@ -27,6 +28,7 @@ def popup(text):
 def finished(file, operation, window):
     finishPrompt = tk.Tk()
     finishPrompt.title(operation + " сделано!")
+    finishPrompt.resizable(False, False)
     tk.Label(finishPrompt, text=operation + " кончено. Открыть файл?").grid(row=0, column=0, columnspan=2, pady=5, padx=5)
     if 'win' not in os.sys.platform:
         tk.Button(finishPrompt, text="Открыть файл", command=lambda: subprocess.call(['evince',file])).grid(row=1, column=0, pady=5, padx=5, sticky=stickyFill)
@@ -90,6 +92,7 @@ def merge(): #entry, window):
 
     mergeWindow = tk.Tk()
     mergeWindow.title("PDF merger")
+    mergeWindow.resizable(False, False)
 
     tk.Label(mergeWindow, text="Создаст новый PDF из набора файлов").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
 
@@ -110,23 +113,11 @@ def merge(): #entry, window):
     v
     Соединить все файлы!
     '''
-    #entry = int(entry.get())
-    #for i in range(int(entry+1)):
-    #    tk.Label(mergeWindow, text=f"Выбери {i+1}-й PDF:").grid(row=i+1, column=0, padx=10, pady=3)
-    #    locals()[f'collaps_{i}'] = tk.Entry(mergeWindow)
-    #    locals()[f'collaps_{i}'].grid(row=i+1, column=1, sticky=stickyFill, pady=5, padx=5)
-    #    tk.Button(mergeWindow, text="Выбрать...", command=lambda entry=locals()[f'collaps_{i}'], window=mergeWindow: filePicker(entry, window)).grid(row=i+1, column=2, pady=5, padx=5, sticky=stickyFill)
-
-
     tk.Label(mergeWindow, text="Имя исходной папки:").grid(row=1, column=0)
     originalDir = tk.Entry(mergeWindow)
     originalDir.grid(row=1, column=1, padx=5, pady=5, sticky=stickyFill)
     tk.Button(mergeWindow, text="Искать...", command=lambda entry=originalDir, window=mergeWindow: folderPicker(entry, window)).grid(row=1, column=2, pady=5, padx=5, sticky=stickyFill)
 
-    #tk.Label(mergeWindow, text="Имя сшитого файла:").grid(row=2, column=0)
-    #mergedFile = tk.Entry(mergeWindow)
-    #mergedFile.grid(row=2, column=1, padx=5, pady=5, sticky=stickyFill)
-    #tk.Button(mergeWindow, text="Искать...", command=lambda entry=mergedFile, window=mergeWindow: filePicker(entry, window)).grid(row=2, column=2, pady=5, padx=5, sticky=stickyFill)
 
     tk.Button(mergeWindow, text="Сшить!", command=lambda: mergeWindow.quit()).grid(row=2, column=0, columnspan=3, padx=5, pady=10, sticky=stickyFill)
 
@@ -137,7 +128,6 @@ def merge(): #entry, window):
         path_ = root.split(os.sep)[0]
         for file in files:
             #print(path_, file)
-            #files_.append(checkExist(locals()[os.path.join(path_,file)].get()))
             files_.append(checkExist(os.path.join(path_,file)))
     #print(f'files are {files_}')
 
@@ -158,6 +148,7 @@ def merge(): #entry, window):
 def pageUpdate():
     updaterWindow = tk.Tk()
     updaterWindow.title("Обновить страницу PDF")
+    updaterWindow.resizable(False, False)
 
     tk.Label(updaterWindow, text="Обновит одну страницу PDF").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
 
@@ -222,6 +213,7 @@ def pageUpdate():
 def insertPage():
     inserterWindow = tk.Tk()
     inserterWindow.title("PDF вставка страницы")
+    inserterWindow.resizable(False, False)
 
     tk.Label(inserterWindow, text="Вставить страницу внутрь PDF").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
 
@@ -285,6 +277,7 @@ def insertPage():
 def deletePages():
     deleterWindow = tk.Tk()
     deleterWindow.title("Удалить страницы из PDF")
+    deleterWindow.resizable(False, False)
     '''
     вариант 4
     вместо диапазона парсить re строку типа 1,3,5-15, 23
@@ -357,6 +350,7 @@ def checkExist(fileName):
 def BoomPages():
     boomerWindow = tk.Tk()
     boomerWindow.title("Удалить страницы из PDF")
+    boomerWindow.resizable(False, False)
 
     tk.Label(boomerWindow, text="Разделяет страницы PDF").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
 
@@ -399,6 +393,7 @@ selector.configure(padx=10, pady=10)
 selector.title("PDF Редактор")
 icon = tk.PhotoImage(data=favicon.icon)
 selector.tk.call('wm', 'iconphoto', selector._w, icon)
+selector.resizable(False, False)
 
 stickyFill = tk.N + tk.E + tk.W + tk.S
 

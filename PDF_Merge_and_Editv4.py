@@ -27,9 +27,9 @@ def popup(text):
 
 def finished(file, operation, window):
     finishPrompt = tk.Tk()
-    finishPrompt.title(operation + " сделано!")
+    finishPrompt.title(operation + "Сделано!")
     finishPrompt.resizable(False, False)
-    tk.Label(finishPrompt, text=operation + " кончено. Открыть файл?").grid(row=0, column=0, columnspan=2, pady=5, padx=5)
+    tk.Label(finishPrompt, text=operation + "Окончено. Открыть файл?").grid(row=0, column=0, columnspan=2, pady=5, padx=5)
     if 'win' not in os.sys.platform:
         tk.Button(finishPrompt, text="Открыть файл", command=lambda: subprocess.call(['evince',file])).grid(row=1, column=0, pady=5, padx=5, sticky=stickyFill)
     else:
@@ -128,7 +128,7 @@ def merge(): #entry, window):
         path_ = root.split(os.sep)[0]
         for file in files:
             #print(path_, file)
-            files_.append(checkExist(os.path.join(path_,file)))
+            files_.append(checkExist(os.path.normpath(os.path.join(path_,file))))
     #print(f'files are {files_}')
 
     mergedFile = path_+'.pdf' #mergedFile = mergedFile.get()
@@ -209,6 +209,75 @@ def pageUpdate():
     updaterWindow.destroy()
     finished(filename, "Обновление страницы", updaterWindow)
 
+
+
+def movePages():
+    moveWindow = tk.Tk()
+    moveWindow.title("PDF переместить листы")
+    moveWindow.resizable(False, False)
+
+    tk.Label(moveWindow, text="Переместить страницу PDF").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
+
+    tk.Label(moveWindow, text="Начальный PDF:").grid(row=1, column=0, padx=10, pady=3)
+    updateFile = tk.Entry(moveWindow)
+    updateFile.grid(row=1, column=1, sticky=stickyFill, pady=5, padx=5)
+    tk.Button(moveWindow, text="Выбрать...", command=lambda entry=updateFile, window=moveWindow: filePicker(entry, window)).grid(row=1, column=2, pady=5, padx=5, sticky=stickyFill)
+
+    tk.Label(moveWindow, text="Номер страницы для перемещения:").grid(row=2, column=0, padx=10, pady=3)
+    pageBefore = tk.Entry(moveWindow)
+    pageBefore.grid(row=2, column=1, sticky=stickyFill, pady=5, padx=5)
+
+    tk.Label(moveWindow, text="Номер страницы, перед которым вставить:").grid(row=4, column=0, padx=10, pady=3)
+    pageAfter = tk.Entry(moveWindow)
+    pageAfter.grid(row=4, column=1, sticky=stickyFill, pady=5, padx=5)
+    pageAfter.insert(0, "1")
+
+    tk.Button(moveWindow, text="Переместить!", command=lambda: moveWindow.quit()).grid(row=5, column=0, columnspan=3, padx=5, pady=10, sticky=stickyFill)
+
+    moveWindow.mainloop()
+
+    filename = updateFile.get()
+    updateFile = checkExist(updateFile.get())
+    pageBefore = int(pageBefore.get())
+    filename = filename[:-4] + '-mov-'+str(pageBefore)+'.pdf'
+    pageAfter = int(pageAfter.get())
+
+    if pageBefore == 0 or pageAfter == 0:
+        popup("Число не верно, должно быть больше 0")
+
+    originalPDF = PyPDF2.PdfReader(updateFile)
+    updatedPDF = PyPDF2.PdfWriter()
+    try:
+        page_was_deleted = False
+        for i in range(len(originalPDF.pages)):
+            #updatedPDF.insert_page(originalPDF.pages[pageBefore - 1], pageAfter - 1)
+            if i == pageBefore-1:
+                # 1 - удаление страницы
+                page_was_deleted = True
+                continue
+            elif i == pageAfter-1 and page_was_deleted:
+                # 2 - добавление страницы после удалённой
+                page_was_deleted = False
+                updatedPDF.add_page(originalPDF.pages[i])
+                updatedPDF.add_page(originalPDF.pages[pageBefore-1])
+            elif i == pageAfter-1:
+                # 3 - добавление страницы до удаления либо отработан 2
+                updatedPDF.add_page(originalPDF.pages[pageBefore-1])
+                updatedPDF.add_page(originalPDF.pages[i])
+            else:
+                # ряовое включение страницы
+                updatedPDF.add_page(originalPDF.pages[i])
+
+    except IndexError:
+        popup("Проверьте, входит ли номер страницы в диапазон листов")
+
+    #pdfOut = PyPDF2.PdfWriter()
+    outputFile = open(filename, 'wb')
+    updatedPDF.write(outputFile)
+    outputFile.close()
+
+    moveWindow.destroy()
+    finished(filename, "Перемещение страницы", moveWindow)
 
 def insertPage():
     inserterWindow = tk.Tk()
@@ -398,18 +467,20 @@ selector.resizable(False, False)
 stickyFill = tk.N + tk.E + tk.W + tk.S
 
 # body of GUI
-tk.Label(selector, text="Работа с PDF:").grid(row=0, column=1, columnspan=2, pady=5, padx=5)
+tk.Label(selector, text="Работа с PDF:").grid(row=0, column=0, pady=5, padx=5)
+tk.Label(selector, text="v 0.4.4").grid(row=0, column=1, pady=5, padx=5)
 #nfiles = tk.IntVar()
 #entry_ = tk.Entry(selector, text=nfiles)
 #entry_.grid(row=1, column=1, sticky=stickyFill, pady=5, padx=5)
 #nfiles.set(2)
 #tk.Button(selector, text="Сшить PDFs", command=lambda entry=entry_, window=selector: merge(entry, window)).grid(row=1, column=1, columnspan=2, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Сшить PDF файлы из папки", command=merge).grid(row=1, column=1, columnspan=2, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Обновить страницу в PDF", command=pageUpdate).grid(row=2, column=1, columnspan=2, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Втиснуть страницу в PDF", command=insertPage, padx=20).grid(row=3, column=1, columnspan=2, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Удалить страницы в PDF", command=deletePages).grid(row=4, column=1, columnspan=2, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Разбить PDF айл в папку", command=BoomPages).grid(row=5, columnspan=2, column=1, sticky=stickyFill, pady=3, padx=5)
-tk.Button(selector, text="Описание проекта в github", command=instructions).grid(row=6, column=1, columnspan=2, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Сшить PDF файл из папки", command=merge).grid(row=1, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Обновить страницу в PDF", command=pageUpdate).grid(row=2, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Втиснуть страницу в PDF", command=insertPage, padx=20).grid(row=3, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Удалить страницы в PDF", command=deletePages).grid(row=4, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Разбить PDF файл в папку", command=BoomPages).grid(row=5, columnspan=2, column=0, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Переместить листы PDF", command=movePages).grid(row=6, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
+tk.Button(selector, text="Описание проекта в github", command=instructions).grid(row=7, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
 
 
 selector.protocol("WM_DELETE_WINDOW", sys.exit)

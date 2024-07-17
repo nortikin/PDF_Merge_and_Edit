@@ -33,20 +33,31 @@ python3 ./PDF_Merge_and_Edit.py
 
 1. Запустите:
 
-![main window](screenshots/main.png)
+![главное окно](https://github.com/user-attachments/assets/2f918ed8-3e0c-4153-b326-5aadb2c988e1)
+
 
 2. Выбери функцию
 
-![merger](screenshots/merge.png)
+![делитель](https://github.com/user-attachments/assets/d9e12a74-66cd-46de-8fe0-37f1f5306dbd)
 
-![updater](screenshots/updater.png)
+![сумматор](https://github.com/user-attachments/assets/18fe493b-e646-428e-a6e5-261f1d1102c2)
 
-![inserter](screenshots/inserter.png)
+![обновлятор](https://github.com/user-attachments/assets/175a5616-ec94-4441-b6fe-5499a8ed5f7b)
 
-![deleter](screenshots/deleter.png)
+![втискиватель](https://github.com/user-attachments/assets/4a4a56e5-4f95-44fa-8a3f-f33b57ab2f82)
 
-3. Выбери файлы, в том числе выводящий файл для Слияния
+![перемещатор](https://github.com/user-attachments/assets/7a0f3c98-3346-4984-9f71-9694d613efb0)
 
-4. Если всё норм, появится окно окончания
+![удалятор](https://github.com/user-attachments/assets/47eeb7e3-680b-497f-88eb-877ebabe74b6)
 
-![confirm](screenshots/confirm.png)
+![оптимизатор](https://github.com/user-attachments/assets/4af4bed2-f917-4351-a50a-6bc8e2594459)
+
+![помогатор](https://github.com/user-attachments/assets/b858eaff-c26e-4e3e-9601-79233da5a833)
+
+
+3. Выбери файлы/папку
+
+4. Жмите процесс
+
+![окончатор](https://github.com/user-attachments/assets/5240c7dd-809f-4ad3-83e2-129143e9a115)
+

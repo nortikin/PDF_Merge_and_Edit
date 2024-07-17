@@ -438,7 +438,7 @@ def optimizePDF():
     pdfOut.write(outputFile)
     outputFile.close()
     optimizerWindow.destroy()
-    finished(filename, "Оптимизатор PDF закончил", optimizerWindow)
+    finished(filename, "Оптимизатор PDF ", optimizerWindow)
 
 def checkExist(fileName):
     try:

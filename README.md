@@ -33,7 +33,7 @@ python3 ./PDF_Merge_and_Edit.py
 
 1. Запустите:
 
-![главное окно](https://github.com/user-attachments/assets/2f918ed8-3e0c-4153-b326-5aadb2c988e1)
+![главное окно](https://github.com/user-attachments/assets/b645001a-c2c5-4dbd-96a0-a1ebfd5c4e05)
 
 
 2. Выбери функцию

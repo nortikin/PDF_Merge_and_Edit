@@ -21,7 +21,7 @@ from functools import partial
 
 # Written by Simon Wong
 # https://github.com/simonwongwong
-
+754
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -227,8 +227,9 @@ def mergePages(): #entry, window):
         if not getval:
             getval = listbox.get(0,tk.END)
         odir = originalDir.get()
-        path_ = os.path.abspath(odir.split(os.sep)[-1])
+        path_ = os.path.abspath(odir)
         mergedFile = path_+'.pdf' #mergedFile = mergedFile.get()
+        print("Ваш файл сохранён, как:",mergedFile)
         mergedBook = PyPDF2.PdfMerger()
         #print('files:',getval)
         for f in getval:

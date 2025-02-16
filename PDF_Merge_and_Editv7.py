@@ -21,7 +21,6 @@ from functools import partial
 
 # Written by Simon Wong
 # https://github.com/simonwongwong
-754
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """

@@ -21,6 +21,7 @@ from functools import partial
 
 # Written by Simon Wong
 # https://github.com/simonwongwong
+754
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -282,26 +283,32 @@ def mergePages(): #entry, window):
         except:
             pass
 
+
+
+
+
+
     mergeWindow = tk.Tk()
     mergeWindow.title("PDF сшить страницы")
     mergeWindow.resizable(True, True)
+    mergeWindow.geometry('800x600+200+100')
 
     tk.Label(mergeWindow, text="Создаст новый PDF из выбранных файлов").grid(row=0, column=0, columnspan=3, padx=10, pady=3, sticky=stickyFill)
     #tk.Label(mergeWindow, text="Имя исходной папки:").grid(row=1, column=0)
     originalDir = tk.Entry(mergeWindow)
     originalDir.grid(row=1, column=1, padx=5, pady=5, sticky=stickyFill)
-    
-    progress = Progressbar(mergeWindow, orient=HORIZONTAL, length=100, mode='indeterminate')
-    progress.grid(row=1, column=2, padx=5, pady=5, sticky=stickyFill)
 
-    listbox=Listbox(mergeWindow, selectmode='extended', height=10, width=20,  font="arial 12") # selectmode='multiple'
-    listbox.grid(row=1, rowspan=5, column=0, columnspan=2, padx=5, pady=5, sticky=stickyFill)
+    progress = Progressbar(mergeWindow, orient=HORIZONTAL, length=100, mode='indeterminate')
+    progress.grid(row=1, column=6, padx=5, pady=5, sticky=stickyFill)
+
+    listbox=Listbox(mergeWindow, height=28, width=75, selectmode='extended',   font="arial 12") # selectmode='multiple', 
+    listbox.grid(row=1, rowspan=5, column=0, columnspan=5, padx=5, pady=5, sticky=stickyFill)
     #print("LISTBOX: ",listbox)
     # this button is used to invoke get_item function
-    tk.Button(mergeWindow, text="Искать...", command=lambda listbox=listbox, entry=originalDir, window=mergeWindow: get_pages(entry, window, listbox)).grid(row=2, column=2, pady=5, padx=5, sticky=stickyFill)
-    tk.Button(mergeWindow, text="Сшить!", command=lambda listbox=listbox, originalDir=originalDir, window=mergeWindow, progress=progress: merge_items(listbox, originalDir, window, progress)).grid(row=3, column=2, columnspan=3, padx=5, pady=10, sticky=stickyFill)
-    tk.Button(mergeWindow, text="Вверх", command=lambda listbox=listbox, window=mergeWindow: moveup(listbox, window)).grid(row=4, column=2, columnspan=3, padx=5, pady=10, sticky=stickyFill)
-    tk.Button(mergeWindow, text="Вниз", command=lambda listbox=listbox, window=mergeWindow: movedown(listbox, window)).grid(row=5, column=2, columnspan=3, padx=5, pady=10, sticky=stickyFill)
+    tk.Button(mergeWindow, text="Искать...", command=lambda listbox=listbox, entry=originalDir, window=mergeWindow: get_pages(entry, window, listbox)).grid(row=2, column=6, pady=5, padx=5, sticky=stickyFill)
+    tk.Button(mergeWindow, text="Сшить!", command=lambda listbox=listbox, originalDir=originalDir, window=mergeWindow, progress=progress: merge_items(listbox, originalDir, window, progress)).grid(row=3, column=6, columnspan=3, padx=5, pady=10, sticky=stickyFill)
+    tk.Button(mergeWindow, text="Вверх", command=lambda listbox=listbox, window=mergeWindow: moveup(listbox, window)).grid(row=4, column=6, columnspan=3, padx=5, pady=10, sticky=stickyFill)
+    tk.Button(mergeWindow, text="Вниз", command=lambda listbox=listbox, window=mergeWindow: movedown(listbox, window)).grid(row=5, column=6, columnspan=3, padx=5, pady=10, sticky=stickyFill)
 
     mergeWindow.mainloop()
 
@@ -698,13 +705,13 @@ stickyFill = tk.N + tk.E + tk.W + tk.S
 
 # body of GUI
 #mi1 = resource_path(os.path.join("resources","SK.png"))
-mi2 = resource_path(os.path.join("resources","logoSK.png"))
+#mi2 = resource_path(os.path.join("resources","logoSK.png"))
 #my_img1 = tk.PhotoImage(file = mi1)
-my_img = tk.PhotoImage(file = mi2)
+#my_img = tk.PhotoImage(file = mi2)
 #svg_image = tksvg.SvgImage( file = 'path/to/file' , scaletoheight = 200 )
 #tk.Label(selector,  image = svg_image ).pack()
 #tk.Label(selector,  image=my_img1).grid(row=0, column=0, columnspan=2, sticky=stickyFill, pady=3, padx=5)
-tk.Label(selector,  image=my_img).grid(row=1, column=0, sticky=stickyFill, pady=3, padx=5)
+#tk.Label(selector,  image=my_img).grid(row=1, column=0, sticky=stickyFill, pady=3, padx=5)
 tk.Label(selector, text="Работа с PDF v 0.7.0").grid(row=1, column=1, pady=5, padx=5)
 #nfiles = tk.IntVar()
 #entry_ = tk.Entry(selector, text=nfiles)

@@ -28,7 +28,7 @@ def recu(data):
     # Вообще должен читать закладки для листов,
     #но не все файлы и программы делают их, называя листы.
     #Здесь какой-то хаос, я пока сделал только для Арчикада.
-    #print(f'RECU_{data}, {type(data)}')
+    #print(f'RECU_{data}')
     if  "/PieceInfo" in data.keys():
         if "/GRAPHISOFT" in data["/PieceInfo"]: # Защита от индезайн и ещё чего угодно
             #print('PI')
@@ -39,14 +39,14 @@ def recu(data):
     elif  "/Private" in data.keys():
         #print('PR')
         return data["/Private"]["/ACPageSource"]["/TargetName"]
-    elif  type(data) is not dict:
+    else:
         for i in data:
             if type(i)  in (list, tuple) and len(i):
                 print('LS')
                 return recu(i)
             else:
-                print('None of pagename')
-                return "page"
+                #print(f'None of pagename {i}', end='\r')
+                return "Страница"
     return None
 
 def resource_path(relative_path):

@@ -33,16 +33,18 @@ python3 ./PDF_Merge_and_Edit.py
 
 1. Запустите:
 
-![главное окно](https://github.com/user-attachments/assets/26018613-4667-4c75-9643-d0433fbb571c)
+![главное окно](https://github.com/user-attachments/assets/26018613-4667-4c75-9643-d0433fbb571c)  
 
 
-2. Выбери функцию
-![основное окно режим сшить из файлов](https://github.com/user-attachments/assets/76001366-a32d-4fff-b132-6167271c8bb6)
+2. Выбери функцию   
+   
+![основное окно режим сшить из файлов](https://github.com/user-attachments/assets/76001366-a32d-4fff-b132-6167271c8bb6)  
 
-дополнительно просто разделить по страницам в папку и сшить воедино из папки.
+Дополнительно просто разделить по страницам в папку и сшить воедино из папки.  
 
-4. Досвидания
-![окончатор](https://github.com/user-attachments/assets/3004028a-fa8a-4962-84e7-fc3a6228fa7f)
+3. Досвидания   
+   
+![окончатор](https://github.com/user-attachments/assets/3004028a-fa8a-4962-84e7-fc3a6228fa7f)  
 
 
 

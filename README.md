@@ -34,6 +34,8 @@ python3 ./PDF_Merge_and_Edit.py
 1. Запустите:
 
 ![главное окно](https://github.com/user-attachments/assets/26018613-4667-4c75-9643-d0433fbb571c)  
+<img width="282" height="211" alt="image" src="https://github.com/user-attachments/assets/262d0117-e52c-46c3-9247-d5e3cbbdfeb6" />
+
 
 
 2. Выбери функцию   
